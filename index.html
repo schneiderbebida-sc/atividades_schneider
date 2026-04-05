@@ -38,25 +38,29 @@
 function gerarRelatorio() {
 
     const atividades = document.querySelectorAll("input[type=checkbox]");
-    let relatorio = "Relatório de Checklist%0A";
+    let relatorio = "📋 Relatório de Checklist\n";
+
     const agora = new Date();
-    relatorio += "Data e hora: " + agora.toLocaleString("pt-BR") + "%0A%0A";
+    relatorio += "🕒 Data e hora: " + agora.toLocaleString("pt-BR") + "\n\n";
 
     atividades.forEach(a => {
-        relatorio += (a.checked ? "[X] " : "[ ] ") + a.dataset.nome + "%0A";
+        relatorio += (a.checked ? "✅ " : "⬜ ") + a.dataset.nome + "\n";
     });
 
-    const numero = "5541996515546";
-    const url = "https://wa.me/" + numero + "?text=" + relatorio;
+    // Copiar automaticamente
+    navigator.clipboard.writeText(relatorio);
 
-    window.open(url, "_blank");
+    // Abrir grupo do WhatsApp
+    const grupo = "https://chat.whatsapp.com/HkiO87DamdUGVZisHlLqxC";
+    window.open(grupo, "_blank");
+
+    alert("Relatório copiado! Agora é só colar no grupo Schneider - Itapema Meia Praia 👍");
 }
 </script>
 </head>
 
 <body>
 
-<!-- ✅ LOGO CORRETA — ESTA LINHA É O QUE FALTAVA!! -->
 <img src="Base64.jpeg" alt="Logo" class="logo">
 
 <h2>Checklist Diário</h2>
@@ -96,7 +100,7 @@ function gerarRelatorio() {
 
 </table>
 
-<button onclick="gerarRelatorio()">Enviar Relatório via WhatsApp</button>
+<button onclick="gerarRelatorio()">Enviar Relatório para o Grupo</button>
 
 </body>
 </html>
