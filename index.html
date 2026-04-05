@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checklist - Schneider Bebidas</title>
 
 <style>
@@ -24,9 +25,16 @@
  }
  button {
    margin-top: 20px;
-   padding: 10px 15px;
+   padding: 12px 18px;
    font-size: 16px;
    cursor: pointer;
+   background-color: #25D366;
+   color: white;
+   border: none;
+   border-radius: 5px;
+ }
+ button:hover {
+   background-color: #1ebe5d;
  }
  .logo {
    width: 150px;
@@ -35,10 +43,10 @@
 </style>
 
 <script>
-function gerarRelatorio() {
+async function gerarRelatorio() {
 
     const atividades = document.querySelectorAll("input[type=checkbox]");
-    let relatorio = "📋 Relatório de Checklist\n";
+    let relatorio = "📋 *Relatório de Checklist*\n";
 
     const agora = new Date();
     relatorio += "🕒 Data e hora: " + agora.toLocaleString("pt-BR") + "\n\n";
@@ -47,13 +55,28 @@ function gerarRelatorio() {
         relatorio += (a.checked ? "✅ " : "⬜ ") + a.dataset.nome + "\n";
     });
 
-    // Copiar automaticamente
-    navigator.clipboard.writeText(relatorio);
-
-    // Abrir grupo do WhatsApp
-    window.open("https://web.whatsapp.com", "_blank");
-
-    alert("Relatório copiado! Agora é só colar no grupo Schneider - Itapema Meia Praia 👍");
+    // 📱 MOBILE (melhor experiência)
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: "Checklist Diário",
+                text: relatorio
+            });
+        } catch (err) {
+            alert("Compartilhamento cancelado.");
+        }
+    } 
+    
+    // 💻 DESKTOP (fallback)
+    else {
+        try {
+            await navigator.clipboard.writeText(relatorio);
+            window.open("https://web.whatsapp.com", "_blank");
+            alert("Relatório copiado! Abra o grupo e cole 👍");
+        } catch (err) {
+            alert("Erro ao copiar. Copie manualmente:\n\n" + relatorio);
+        }
+    }
 }
 </script>
 </head>
@@ -74,7 +97,7 @@ function gerarRelatorio() {
 
 <tr>
   <td><input type="checkbox" data-nome="Pausar itens zerados no Ifood e ativar os novos"></td>
-  <td>Pausar itens zerados no Ifood e ativar os novo itens com saldo.</td>
+  <td>Pausar itens zerados no Ifood e ativar os novos itens com saldo</td>
 </tr>
 
 <tr>
@@ -88,18 +111,18 @@ function gerarRelatorio() {
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Tirar o pó das garrafas e gondolas"></td>
-  <td>Tirar o pó das garrafas e gondolas</td>
+  <td><input type="checkbox" data-nome="Tirar o pó das garrafas e gôndolas"></td>
+  <td>Tirar o pó das garrafas e gôndolas</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Efetuar contagem ciclica"></td>
+  <td><input type="checkbox" data-nome="Efetuar contagem cíclica"></td>
   <td>Efetuar contagem cíclica</td>
 </tr>
 
 </table>
 
-<button onclick="gerarRelatorio()">Enviar Relatório para o Grupo</button>
+<button onclick="gerarRelatorio()">📲 Enviar Relatório</button>
 
 </body>
 </html>
