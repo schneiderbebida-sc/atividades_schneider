@@ -19,7 +19,11 @@
    padding: 10px;
    font-size: 16px;
    margin-bottom: 15px;
-   width: 200px;
+   width: 220px;
+ }
+
+ .erro {
+   border: 2px solid red;
  }
 
  table {
@@ -62,12 +66,19 @@
 <script>
 async function gerarRelatorio() {
 
-    const funcionario = document.getElementById("funcionario").value;
+    const select = document.getElementById("funcionario");
+    const funcionario = select.value;
 
+    // 🔴 BLOQUEIO OBRIGATÓRIO
     if (!funcionario) {
-        alert("Selecione o responsável antes de enviar!");
+        alert("⚠️ É obrigatório selecionar o responsável!");
+        select.classList.add("erro");
+        select.focus();
         return;
     }
+
+    // remove erro se estiver ok
+    select.classList.remove("erro");
 
     const atividades = document.querySelectorAll("input[type=checkbox]");
     let relatorio = "📋 *Relatório de Checklist*\n";
@@ -81,7 +92,7 @@ async function gerarRelatorio() {
         relatorio += (a.checked ? "✅ " : "⬜ ") + a.dataset.nome + "\n";
     });
 
-    // 📱 MOBILE
+    // 📱 MOBILE (melhor experiência)
     if (navigator.share) {
         try {
             await navigator.share({
@@ -113,7 +124,7 @@ async function gerarRelatorio() {
 <h2>Checklist Diário</h2>
 
 <label><strong>Responsável:</strong></label><br>
-<select id="funcionario">
+<select id="funcionario" required>
   <option value="">Selecione...</option>
   <option value="Veneza">Veneza</option>
   <option value="Lucas">Lucas</option>
