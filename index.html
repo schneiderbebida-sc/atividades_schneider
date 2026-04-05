@@ -61,15 +61,36 @@
    width: 150px;
    margin-bottom: 20px;
  }
+
+ .info-dia {
+   background: #e7f3ff;
+   padding: 10px;
+   border-left: 4px solid #2196F3;
+   margin-bottom: 15px;
+ }
 </style>
 
 <script>
+function obterContagemPorDia() {
+    const hoje = new Date().getDay();
+
+    switch (hoje) {
+        case 1:
+            return "Segunda-feira: Refrigerantes, sucos, águas e energéticos";
+        case 3:
+            return "Quarta-feira: Cervejas e destilados (vodka, whisky e cachaça)";
+        case 5:
+            return "Sexta-feira: Vinhos e espumantes";
+        default:
+            return "Hoje não há contagem cíclica programada";
+    }
+}
+
 async function gerarRelatorio() {
 
     const select = document.getElementById("funcionario");
     const funcionario = select.value;
 
-    // 🔴 BLOQUEIO OBRIGATÓRIO
     if (!funcionario) {
         alert("⚠️ É obrigatório selecionar o responsável!");
         select.classList.add("erro");
@@ -77,7 +98,6 @@ async function gerarRelatorio() {
         return;
     }
 
-    // remove erro se estiver ok
     select.classList.remove("erro");
 
     const atividades = document.querySelectorAll("input[type=checkbox]");
@@ -92,7 +112,10 @@ async function gerarRelatorio() {
         relatorio += (a.checked ? "✅ " : "⬜ ") + a.dataset.nome + "\n";
     });
 
-    // 📱 MOBILE (melhor experiência)
+    // adiciona info da contagem no relatório
+    relatorio += "\n📦 Contagem Cíclica:\n" + obterContagemPorDia();
+
+    // MOBILE
     if (navigator.share) {
         try {
             await navigator.share({
@@ -103,7 +126,7 @@ async function gerarRelatorio() {
             alert("Compartilhamento cancelado.");
         }
     } 
-    // 💻 DESKTOP
+    // DESKTOP
     else {
         try {
             await navigator.clipboard.writeText(relatorio);
@@ -114,6 +137,11 @@ async function gerarRelatorio() {
         }
     }
 }
+
+// mostra na tela ao carregar
+window.onload = function() {
+    document.getElementById("infoDia").innerText = obterContagemPorDia();
+}
 </script>
 </head>
 
@@ -122,6 +150,11 @@ async function gerarRelatorio() {
 <img src="Base64.jpeg" alt="Logo" class="logo">
 
 <h2>Checklist Diário</h2>
+
+<div class="info-dia">
+<strong>📦 Contagem Cíclica de Hoje:</strong><br>
+<span id="infoDia"></span>
+</div>
 
 <label><strong>Responsável:</strong></label><br>
 <select id="funcionario" required>
@@ -134,38 +167,33 @@ async function gerarRelatorio() {
 <tr><th>Feito</th><th>Atividade</th></tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Ativar o Ifood"></td>
+  <td><input type="checkbox" data-nome="Ativar o sistema do iFood"></td>
   <td>Ativar o sistema do iFood para início das vendas</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Pausar itens zerados no Ifood e ativar os novos"></td>
+  <td><input type="checkbox" data-nome="Atualizar status dos produtos no iFood"></td>
   <td>Pausar itens sem estoque no iFood e ativar produtos disponíveis com saldo</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Abrir o caixa"></td>
+  <td><input type="checkbox" data-nome="Abertura do caixa"></td>
   <td>Realizar a abertura do caixa</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Passar um pano na loja"></td>
-  <td>Passar um pano na loja</td>
+  <td><input type="checkbox" data-nome="Limpeza geral da loja"></td>
+  <td>Efetuar a limpeza geral da loja (chão e superfícies)</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Tirar o pó das garrafas e gôndolas"></td>
-  <td>Efetuar a limpeza geral da loja (passar pano no chão e superfícies)</td>
-</tr>
-
-<tr>
-  <td><input type="checkbox" data-nome="Tirar o pó das garrafas e gôndolas"></td>
+  <td><input type="checkbox" data-nome="Limpeza de garrafas e gôndolas"></td>
   <td>Realizar a limpeza das garrafas e gôndolas (remoção de poeira)</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Efetuar contagem cíclica"></td>
-  <td>Executar a contagem cíclica de estoque</td>
+  <td><input type="checkbox" data-nome="Contagem cíclica de estoque"></td>
+  <td>Executar a contagem cíclica de estoque conforme cronograma semanal</td>
 </tr>
 
 </table>
