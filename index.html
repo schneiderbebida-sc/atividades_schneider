@@ -109,7 +109,13 @@ async function gerarRelatorio() {
     relatorio += "🕒 Data e hora: " + agora.toLocaleString("pt-BR") + "\n\n";
 
     checkboxes.forEach(cb => {
-        const atividade = cb.closest("tr").children[1].innerText.trim();
+        const linha = cb.closest("tr");
+        const colunas = linha.getElementsByTagName("td");
+
+        let atividade = colunas.length > 1 
+            ? colunas[1].innerText.trim() 
+            : "Atividade não encontrada";
+
         relatorio += (cb.checked ? "✅ " : "⬜ ") + atividade + "\n";
     });
 
