@@ -100,7 +100,7 @@ async function gerarRelatorio() {
 
     select.classList.remove("erro");
 
-    const atividades = document.querySelectorAll("input[type=checkbox]");
+    const checkboxes = document.querySelectorAll("input[type=checkbox]");
     let relatorio = "📋 *Relatório de Checklist*\n";
 
     const agora = new Date();
@@ -108,11 +108,11 @@ async function gerarRelatorio() {
     relatorio += "👤 Responsável: " + funcionario + "\n";
     relatorio += "🕒 Data e hora: " + agora.toLocaleString("pt-BR") + "\n\n";
 
-    atividades.forEach(a => {
-        relatorio += (a.checked ? "✅ " : "⬜ ") + a.dataset.nome + "\n";
+    checkboxes.forEach(cb => {
+        const atividade = cb.closest("tr").children[1].innerText.trim();
+        relatorio += (cb.checked ? "✅ " : "⬜ ") + atividade + "\n";
     });
 
-    // adiciona info da contagem no relatório
     relatorio += "\n📦 Contagem Cíclica:\n" + obterContagemPorDia();
 
     // MOBILE
@@ -138,7 +138,6 @@ async function gerarRelatorio() {
     }
 }
 
-// mostra na tela ao carregar
 window.onload = function() {
     document.getElementById("infoDia").innerText = obterContagemPorDia();
 }
@@ -167,49 +166,49 @@ window.onload = function() {
 <tr><th>Feito</th><th>Atividade</th></tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Ativar o sistema do iFood"></td>
+  <td><input type="checkbox"></td>
   <td>Ativar o sistema do iFood para início das vendas</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Atualizar status dos produtos no iFood"></td>
+  <td><input type="checkbox"></td>
   <td>Pausar itens sem estoque no iFood e ativar produtos disponíveis com saldo</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Abertura do caixa"></td>
+  <td><input type="checkbox"></td>
   <td>Realizar a abertura do caixa</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Limpeza geral da loja"></td>
+  <td><input type="checkbox"></td>
   <td>Efetuar a limpeza geral da loja (chão e superfícies)</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox" data-nome="Limpeza de garrafas e gôndolas"></td>
+  <td><input type="checkbox"></td>
   <td>Realizar a limpeza das garrafas e gôndolas (remoção de poeira)</td>
 </tr>
 
 <tr>
-  <td><input type="checkbox"Executar a contagem cíclica de estoque conforme cronograma semanal"></td>
+  <td><input type="checkbox"></td>
   <td>Executar a contagem cíclica de estoque conforme cronograma semanal</td>
 </tr>
- 
- <tr>
-  <td><input type="checkbox"Verificar a validade de todos os produtos da loja."></td>
-  <td>Verificar a validade de todos os produtos da loja.</td>
+
+<tr>
+  <td><input type="checkbox"></td>
+  <td>Verificar a validade de todos os produtos da loja</td>
 </tr>
 
-  <tr>
-  <td><input type="checkbox"Não aceitar produtos dos nossos fornecedores, quando o produto estiver vencido ou danificado"></td>
-  <td>Não aceitar produtos dos nossos fornecedores, quando o produto estiver vencido ou danificado</td>
-  </tr>
+<tr>
+  <td><input type="checkbox"></td>
+  <td>Não aceitar produtos dos fornecedores quando estiverem vencidos ou danificados</td>
+</tr>
 
-   <tr>
-  <td><input type="checkbox"Verificar a necessidade de abastecimento das geladeiras"></td>
-  <td> Verificar a necessidade de abastecimento das geladeiras</td>
-  </tr>
+<tr>
+  <td><input type="checkbox"></td>
+  <td>Verificar a necessidade de abastecimento das geladeiras</td>
+</tr>
 
 </table>
 
