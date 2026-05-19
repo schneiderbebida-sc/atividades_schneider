@@ -125,7 +125,7 @@ async function gerarRelatorio() {
     if (navigator.share) {
         try {
             await navigator.share({
-                title: "Checklist Diário",
+                title: "Checklist Diário. OBS: Alterar o status da placa da porta ao entrar e sair da loja.",
                 text: relatorio
             });
         } catch (err) {
